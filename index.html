@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistir Sports — Esportes ao Vivo</title>
+  <meta name="description" content="Esportes ao vivo no celular e no computador. Os horários dos jogos saem todo dia no nosso Instagram.">
+  <meta name="theme-color" content="#02060c">
+  <link rel="icon" href="icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Assistir Sports">
+  <meta property="og:title" content="Assistir Sports — Esportes ao Vivo">
+  <meta property="og:description" content="Os horários dos jogos saem todo dia no nosso Instagram.">
+  <meta property="og:image" content="og.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #02060c; --bg2: #071628; --line: rgba(255,255,255,.12); --text: #f4f7fb; --muted: #9fb0c6; --neon: #c6ff00; --red: #ff2d46; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; display: grid; place-items: center; padding: 32px 16px;
+      font-family: 'Inter', system-ui, sans-serif; color: var(--text); text-align: center;
+      background: radial-gradient(120% 60% at 50% 0%, #10305a 0%, var(--bg2) 45%, var(--bg) 85%) fixed, var(--bg);
+    }
+    a { color: inherit; text-decoration: none; }
+    main { width: 100%; max-width: 420px; }
+    .logo { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+    .live {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; background: var(--red);
+      padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 900; letter-spacing: 1.5px;
+      box-shadow: 0 0 30px rgba(255,45,70,.55);
+    }
+    .live i { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 50% { opacity: .25; } }
+    h1 {
+      margin-top: 16px; font-family: 'Anton', 'Inter', sans-serif; font-weight: 400; text-transform: uppercase;
+      font-size: clamp(40px, 12vw, 58px); line-height: .98;
+    }
+    h1 span { color: var(--neon); text-shadow: 0 0 22px rgba(198,255,0,.5); }
+    p { margin-top: 14px; color: var(--muted); line-height: 1.5; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+      border-radius: 999px; font-weight: 800; transition: transform .12s, filter .12s;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: scale(.97); }
+    .play { margin-top: 28px; padding: 18px; font-size: 20px; background: var(--neon); color: #10180a; box-shadow: 0 0 30px rgba(198,255,0,.4); }
+    .insta { margin-top: 12px; padding: 14px; font-size: 15px; background: rgba(255,255,255,.08); border: 1px solid var(--line); }
+    ul { margin-top: 28px; list-style: none; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+    footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="icon.png" alt="Assistir Sports">
+    <div><span class="live"><i></i>AO VIVO</span></div>
+    <h1>Esportes ao vivo <span>agora</span></h1>
+    <p>Os horários dos jogos saem todo dia no nosso Instagram. Na hora do jogo, toque no botão abaixo.</p>
+
+    <a class="btn play" id="assistir" href="https://tvexpress.catalogo24h.workers.dev/?utm_source=instagram&utm_medium=bio">▶ Assistir agora</a>
+    <a class="btn insta" href="https://instagram.com/SEU_PERFIL" target="_blank" rel="noopener">Ver horários no Instagram</a>
+
+    <ul>
+      <li>📱 Celular, tablet e computador</li>
+      <li>⚡ Sem cadastro</li>
+    </ul>
+
+    <footer>Assistir Sports</footer>
+  </main>
+  <script>
+    // Link de story pode trazer ?c=nome-do-jogo para medir qual post trouxe o acesso.
+    const c = new URLSearchParams(location.search).get('c');
+    if (c) {
+      const a = document.getElementById('assistir');
+      const u = new URL(a.href);
+      u.searchParams.set('utm_medium', 'story');
+      u.searchParams.set('utm_campaign', c);
+      a.href = u.href;
+    }
+  </script>
+</body>
+</html>
