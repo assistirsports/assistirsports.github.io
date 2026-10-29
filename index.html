@@ -49,6 +49,10 @@
     .btn:active { transform: scale(.97); }
     .play { margin-top: 28px; padding: 18px; font-size: 20px; background: var(--neon); color: #10180a; box-shadow: 0 0 30px rgba(198,255,0,.4); }
     .insta { margin-top: 12px; padding: 14px; font-size: 15px; background: rgba(255,255,255,.08); border: 1px solid var(--line); }
+    .dica { margin-top: 16px; padding: 14px; border-radius: 16px; font-size: 14px; line-height: 1.5;
+            background: rgba(255,212,0,.10); border: 1px solid rgba(255,212,0,.35); color: #ffe680; }
+    .dica[hidden] { display: none; }
+    .copiar { margin-top: 10px; padding: 10px; font-size: 14px; background: rgba(255,255,255,.1); border: 1px solid var(--line); color: var(--text); cursor: pointer; font-family: inherit; }
     ul { margin-top: 28px; list-style: none; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
     footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
   </style>
@@ -62,6 +66,11 @@
 
     <a class="btn play" id="assistir" href="https://tvexpress.catalogo24h.workers.dev/?utm_source=instagram&utm_medium=bio">▶ Assistir agora</a>
     <a class="btn insta" href="https://instagram.com/SEU_PERFIL" target="_blank" rel="noopener">Ver horários no Instagram</a>
+
+    <div class="dica" id="dica" hidden>
+      Não abriu? Toque em <b>⋯</b> no canto superior direito e escolha <b>Abrir no navegador</b>.
+      <button class="btn copiar" id="copiar" type="button">Copiar link</button>
+    </div>
 
     <ul>
       <li>📱 Celular, tablet e computador</li>
@@ -79,6 +88,29 @@
       u.searchParams.set('utm_medium', 'story');
       u.searchParams.set('utm_campaign', c);
       a.href = u.href;
+    }
+
+    // Navegador interno do Instagram/Facebook segura o link: força abrir fora dele.
+    const ua = navigator.userAgent;
+    if (/Instagram|FBAN|FBAV/i.test(ua)) {
+      const a = document.getElementById('assistir');
+      const destino = a.href;
+      if (/Android/i.test(ua)) {
+        const semEsquema = destino.replace(/^https:\/\//, '');
+        a.href = `intent://${semEsquema}#Intent;scheme=https;package=com.android.chrome;` +
+          `S.browser_fallback_url=${encodeURIComponent(destino)};end`;
+      } else if (/iPhone|iPad|iPod/i.test(ua)) {
+        a.href = destino.replace(/^https:/, 'x-safari-https:');
+      }
+      document.getElementById('dica').hidden = false;
+      document.getElementById('copiar').addEventListener('click', async (e) => {
+        try {
+          await navigator.clipboard.writeText(destino);
+          e.target.textContent = 'Link copiado! Cole no navegador';
+        } catch {
+          prompt('Copie o link:', destino);
+        }
+      });
     }
   </script>
 </body>
