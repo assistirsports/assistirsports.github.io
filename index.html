@@ -96,8 +96,12 @@
       const a = document.getElementById('assistir');
       const destino = a.href;
       if (/Android/i.test(ua)) {
+        // Sem "package": o Android escolhe quem abre a URL. Se o PWA estiver
+        // instalado (WebAPK), ele captura o link e abre como app; senão, abre
+        // no navegador padrão. Com package=com.android.chrome ia sempre pro Chrome.
         const semEsquema = destino.replace(/^https:\/\//, '');
-        a.href = `intent://${semEsquema}#Intent;scheme=https;package=com.android.chrome;` +
+        a.href = `intent://${semEsquema}#Intent;scheme=https;action=android.intent.action.VIEW;` +
+          `category=android.intent.category.BROWSABLE;` +
           `S.browser_fallback_url=${encodeURIComponent(destino)};end`;
       } else if (/iPhone|iPad|iPod/i.test(ua)) {
         a.href = destino.replace(/^https:/, 'x-safari-https:');
